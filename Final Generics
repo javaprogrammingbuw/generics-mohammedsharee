@@ -1,0 +1,211 @@
+
+public class DCList<T> {
+	private Node<T> head;
+	private Node<T> tail;
+	private int size;
+	private Node<T> a;
+//	private Node list = new Node(T);
+	
+	public boolean isEmpty() {
+		if(head==null) {
+			return true;
+		}else
+		{
+			return false;
+		}
+	}
+	
+	public void display() {
+		for(Node<T> i =head; i!=tail.getNextNode(); i=i.getNextNode() ) {
+			
+			System.out.println(i.toString());
+		
+		}
+	}
+	
+	public void add(int position, Node<T> value) {
+		this.size++;
+		
+		if(value != null && position<size() && position >=0) {
+			if(position==0) {
+				value.setNextNode(head);
+				head.setPreviousNode(value);
+				head = value;
+			}
+			else{
+				
+		Node<T> oldNode= get(position);
+		value.setPreviousNode(oldNode.getPreviousNode());
+		value.setNextNode(oldNode);
+		value.getPreviousNode().setNextNode(value);
+		oldNode.setPreviousNode(value);
+		value.pos = position;
+		for(Node<T> i =value.getNextNode(); i!=tail.getNextNode(); i=i.getNextNode() ) {
+			i.pos++;
+		       }
+			}
+		}
+	}
+	
+	public void add(Node<T> value) {
+		
+		this.size++;
+		if(head==null){
+			head = value;
+			tail = value;			
+		}
+
+		else{
+			tail.setNextNode(value);
+			value.setPreviousNode(tail);
+			tail = value;
+			tail.pos = size()-1;
+		}	
+	}
+		
+	
+	public void remove(Node<T> value)	{
+		if(value != null && value.pos>=0 && value.pos<size()-1  ) {
+			
+			value.getNextNode().setPreviousNode(value.getPreviousNode());
+			value.getPreviousNode().setNextNode(value.getNextNode());
+		
+		}
+	}
+	
+	public void removeFirst() {
+		if (size()<=1){
+			head = null;
+			tail= null;
+		}
+		else {
+			this.size--;
+			head.setNextNode(head.getNextNode().getNextNode());
+			head.setPreviousNode(null);
+		}
+	}
+	
+	public void removeLast() {
+		if(size()>=2) {
+			Node<T> c =get(size()-2);
+			c.setNextNode(null);
+		}
+		else if(size()==1) {
+			clear();
+		}
+		else{
+			System.out.println("Empty List");
+		}	
+	}
+	
+	public void clear() {
+		head = null;
+	}
+	public Node<T> getFirst(){
+		return head;
+		
+	}
+	public Node<T> getLast(){
+		return tail;
+		
+	}
+	public Node<T> get(int position){
+		for(Node<T> i = head; i!=null; i=i.getNextNode()){
+			if(i.pos == position){	
+				a=i;
+			}
+		}
+		return a;
+	}
+	public int find(T value) {
+		for( Node<T> i=head; i!=null; i=i.getNextNode()) {
+			if(i.getValue()==value) {
+				return i.pos;
+			}
+		}
+		return -1;
+		
+	}
+	public boolean contains(T value) {
+		for(Node<T> i = head; i!=null; i=i.getNextNode()){
+			if(value == i){						
+			return true;
+			}
+   }
+	return false;
+
+		
+	}
+	public int size() {
+		return this.size;
+		
+	}
+	
+}
+ 
+
+
+public class Node<T> {
+
+	private T value;
+	private Node<T> prev;
+	private Node<T> next;
+	public int pos;
+	
+	public Node(T value) {
+		this.value=value;
+	} 
+	public String toString() {
+		
+		return value.toString();	
+	}
+	public void setNextNode(Node<T> next) {
+		this.next=next;	
+	}
+	public void setPreviousNode(Node<T> previous) {
+		this.prev=previous;	
+	}
+	public Node<T> getNextNode(){
+		
+		return this.next;	
+	}
+	public Node<T> getPreviousNode(){
+		
+		return this.prev;	
+	}
+	public T getValue(){
+		return value;
+		
+	}
+	
+}
+
+
+
+public class Compile {
+	public static void main(String[] args) {
+		Node<String> node = new Node<>(new String("A"));
+		DCList<String> list=new DCList<>();
+		list.add(node);
+		list.add(new Node<>(new String("S")));
+		list.add(new Node<>(new String("H")));
+		list.add(new Node<>(new String("A")));
+		list.add(new Node<>(new String("R")));
+		list.add(new Node<>(new String("E")));
+		list.add(new Node<>(new String("E")));
+		list.add(new Node<>(new String("F")));
+		System.out.println(list.size());
+		System.out.println(list.getFirst().getValue());
+//		list.getClass();
+		list.display();
+//		System.out.println(list.getLast().getValue());
+//		list.removeLast();
+//		list.display();
+//		list.removeFirst();
+//		list.display();
+//		list.removeFirst();
+//		list.display();
+//		list.remove(node);
+//		list.display();
+	}
+}
